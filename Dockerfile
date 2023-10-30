@@ -28,8 +28,9 @@ emconfigure ./Configure linux-generic64 --prefix=$EMSCRIPTEN/system && \
 sed -i 's|^CROSS_COMPILE.*$|CROSS_COMPILE=|g' Makefile && \
 emmake make -j 12 build_generated libssl.a libcrypto.a && \
 cp -R include/openssl $EMSCRIPTEN/system/include && \
+cp -R include/openssl $EMSCRIPTEN/cache/sysroot/include && \
 cp libcrypto.a libssl.a $EMSCRIPTEN/system/lib
 
-# COPY . /RNCryptor-C-wasm
+COPY . /RNCryptor-C-wasm
 WORKDIR /RNCryptor-C-wasm
-RUN EMCC_DEBUG=1 emcc src/rncryptor.c $EMSCRIPTEN/system/lib/libssl.a $EMSCRIPTEN/system/lib/libcrypto.a -I $EMSCRIPTEN/cache/sysroot/include -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s EXPORTED_RUNTIME_METHODS='["cwrap"]'
+RUN source /emsdk/emsdk_env.sh && EMCC_DEBUG=1 emcc /RNCryptor-C-wasm/src/rncryptor.c /RNCryptor-C-wasm/RNCryptor-C/rncryptor_c.c -I RNCryptor-C $EMSCRIPTEN/system/lib/libssl.a $EMSCRIPTEN/system/lib/libcrypto.a -I $EMSCRIPTEN/cache/sysroot/include -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s EXPORTED_RUNTIME_METHODS='["cwrap"]' -o rncryptor.out.js

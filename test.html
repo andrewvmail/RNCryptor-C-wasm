@@ -1,0 +1,45 @@
+<script src="./rncryptor.out.js"></script>
+<script>
+  Module.onRuntimeInitialized = async () => {
+    const api = {
+      encrypt: Module.cwrap(
+        // params: pass, file_plain, file_enc
+        "encrypt", "", ["string", "string", "string"]
+        ),
+      decrypt: Module.cwrap(
+        // params: pass, file_enc, file_plain
+        "decrypt", "", ["string", "string", "string"]
+        ),
+    };
+
+    var data = "Hello, world!";
+    // var data = new Uint8Array([1, 2, 3, 4, 5]);
+    FS.writeFile('/myfile.plain', data);
+
+
+    // run encryption
+    console.log('return code encrypt:', api.encrypt("mypass", "/myfile.plain", "/myfile.enc"));
+
+    // read the encrypted file
+    var binary = FS.readFile('/myfile.plain', { encoding: 'utf8' });
+    var blob = new Blob([binary], { type: "application/octet-stream" });
+
+
+    // run encryption
+    console.log('return code decrypt:', api.decrypt("mypass", "/myfile.enc", "myfile.plain"));
+
+
+    console.log("text from decrypt", await blob.text())
+
+    // // download it
+    // var a = document.createElement('a');
+    // a.href = window.URL.createObjectURL(blob);
+    // a.download = "myfile.enc";
+    // document.body.appendChild(a);
+    // a.click();
+
+    // delete the file from virtual file system
+    // FS.unlink('/myfile.plain');
+    // FS.unlink('/myfile.enc');
+  };
+</script>

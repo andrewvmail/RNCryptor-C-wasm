@@ -1,0 +1,26 @@
+diff --git a/mutils.c b/mutils.c
+index 2ac1261..c88af80 100644
+--- a/mutils.c
++++ b/mutils.c
+@@ -1,3 +1,11 @@
++#include <stdlib.h>
++#include <string.h>
++#include <stdio.h>
++#include <fcntl.h>
++#include <sys/stat.h>
++#include <unistd.h>
++#include <ctype.h>
++
+ #include "mutils.h"
+ 
+ /*
+diff --git a/rncryptor_c.c b/rncryptor_c.c
+index 5b50f42..9faa2a7 100644
+--- a/rncryptor_c.c
++++ b/rncryptor_c.c
+@@ -1,3 +1,5 @@
++#include <string.h>
++
+ #include "rncryptor_c.h"
+ #include "mutils.h"
+ 
