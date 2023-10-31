@@ -25,7 +25,7 @@ rncryptor({
   console.log(
     "return code encrypt:",
     api._encrypt("mypass", "/myfile.plain", "/myfile.enc"),
-  );
+    );
 
   // read the encrypted file
   var binary = FS.readFile("/myfile.plain", { encoding: "utf8" });
@@ -35,7 +35,7 @@ rncryptor({
   console.log(
     "return code decrypt:",
     api._decrypt("mypass", "/myfile.enc", "myfile.plain"),
-  );
+    );
 
   console.log("text from decrypt", await blob.text());
 });
@@ -52,5 +52,19 @@ docker build . -t wasmbuilder
 docker run -v "$(pwd)":/RNCryptor-C-wasm -it wasmbuilder /bin/bash 
 
 # inside the container
-source /emsdk/emsdk_env.sh && mkdir -p dist/ && EMCC_DEBUG=1 emcc /RNCryptor-C-wasm/src/rncryptor.c /RNCryptor-C-wasm/RNCryptor-C/rncryptor_c.c /RNCryptor-C-wasm/RNCryptor-C/mutils.c -I RNCryptor-C $EMSCRIPTEN/system/lib/libssl.a $EMSCRIPTEN/system/lib/libcrypto.a -I $EMSCRIPTEN/cache/sysroot/include -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s EXPORTED_RUNTIME_METHODS='["cwrap", "FS"]' -s ENVIRONMENT="web" -s ALLOW_MEMORY_GROWTH=1 -s EXPORT_ES6=1 -s MODULARIZE=1 -s WASM_ASYNC_COMPILATION=1 -o dist/rncryptor.js
+source /emsdk/emsdk_env.sh && mkdir -p dist/ && \
+EMCC_DEBUG=1 emcc \
+/RNCryptor-C-wasm/src/rncryptor.c \
+/RNCryptor-C-wasm/RNCryptor-C/rncryptor_c.c \
+/RNCryptor-C-wasm/RNCryptor-C/mutils.c \
+-I RNCryptor-C $EMSCRIPTEN/system/lib/libssl.a $EMSCRIPTEN/system/lib/libcrypto.a \
+-I $EMSCRIPTEN/cache/sysroot/include \
+-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
+-s EXPORTED_RUNTIME_METHODS='["cwrap", "FS"]' \
+-s ENVIRONMENT="web" \
+-s ALLOW_MEMORY_GROWTH=1 \
+-s EXPORT_ES6=1 \
+-s MODULARIZE=1 \
+-s WASM_ASYNC_COMPILATION=1 \
+-o dist/rncryptor.js
 ```
