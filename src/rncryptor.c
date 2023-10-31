@@ -46,7 +46,7 @@ int encrypt(
     outdata_len = 0;
 
     memset(errbuf,0,sizeof(errbuf));
-    rncryptorc_set_debug(1);
+    rncryptorc_set_debug(0);
     outdata = rncryptorc_encrypt_file_with_password(file_plain,
         RNCRYPTOR3_KDF_ITER,
         password,strlen(password),
@@ -59,7 +59,7 @@ int encrypt(
         (void)free((char *)outdata);
         if (rc == SUCCESS)
         {
-            (void) fprintf(stderr,"Encrypted file: %s\n",file_enc);
+            (void) fprintf(stdout,"Encrypted file: %s\n",file_enc);
             return(0);
         }
     }
@@ -95,7 +95,7 @@ int decrypt(
     errbuf[BUFSIZ];
 
     memset(errbuf,0,sizeof(errbuf));
-    rncryptorc_set_debug(1);
+    rncryptorc_set_debug(0);
     outdata = rncryptorc_decrypt_file_with_password(file_enc,
         RNCRYPTOR3_KDF_ITER,
         password,strlen(password),
@@ -108,7 +108,7 @@ int decrypt(
         if (rc == SUCCESS)
         {
             if (*file_plain != '-')
-                (void) fprintf(stderr,"%s:%d - Decrypted to %s\n",MCFL,file_plain);
+                (void) fprintf(stdout,"%s:%d - Decrypted to %s\n",MCFL,file_plain);
             else
             {
                 (void) fflush(stdout);
