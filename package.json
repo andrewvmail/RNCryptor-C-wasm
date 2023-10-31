@@ -1,6 +1,6 @@
 {
   "name": "rncryptor-c-wasm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "wasm wrapper to RNCryptor-C",
   "main": "dist/rncryptor.js",
   "scripts": {
