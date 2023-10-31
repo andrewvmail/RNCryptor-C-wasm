@@ -7,31 +7,13 @@
 EMSCRIPTEN_KEEPALIVE
 int encrypt(
     const char *password, 
-    const char *file_enc,
-    const char *file_plain) {
+    const char *file_plain,
+    const char *file_enc) {
 
-    printf("The string is: %s\n", password);
     if (password == NULL || file_plain == NULL || file_enc == NULL) {
         printf("Error: password, file_plain & file_enc parameters must be provided.\n");
         return(1);
     }
-    // Open the file
-    FILE *file = fopen(file_plain, "rb");
-    if (file == NULL) {
-        printf("Failed to open the file\n");
-        return(1);
-    }
-
-    // Get the file size
-    fseek(file, 0, SEEK_END);
-    long file_size = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    // Print the file size
-    printf("The file size is: %ld bytes\n", file_size);
-
-    // Close the file
-    fclose(file);
 
     int
     rc;
@@ -75,8 +57,8 @@ int encrypt(
 EMSCRIPTEN_KEEPALIVE
 int decrypt(
     const char *password, 
-    const char *file_plain,
-    const char *file_enc) {
+    const char *file_enc,
+    const char *file_plain) {
 
 
     if (password == NULL || file_plain == NULL || file_enc == NULL) {

@@ -7,38 +7,31 @@ cp -r node_modules/rncryptor-c-wasm/dist/rncryptor.wasm public/
 
 ### Usage (vite)
 ```js
-import rncryptor from "rncryptor-c-wasm";
-import rncryptorWasm from "/rncryptor.wasm?url&file"; 
+import Rncryptor from "rncryptor-c-wasm";
+import rncryptorWasmLocation from "/rncryptor.wasm?url&file";
 
-rncryptor({
-  locateFile: (f) => {
-    return rncryptorWasm;
-  },
-}).then(async (instance) => {
-  console.log("instance", instance);
-  const api = instance;
-  const { FS } = instance;
-  var data = "Hello, world!";
-  // var data = new Uint8Array([1, 2, 3, 4, 5]);
-  instance.FS.writeFile("/myfile.plain", data);
-  // run encryption
-  console.log(
-    "return code encrypt:",
-    api._encrypt("mypass", "/myfile.plain", "/myfile.enc"),
-    );
-
-  // read the encrypted file
-  var binary = FS.readFile("/myfile.plain", { encoding: "utf8" });
-  var blob = new Blob([binary], { type: "application/octet-stream" });
-
-  // run encryption
-  console.log(
-    "return code decrypt:",
-    api._decrypt("mypass", "/myfile.enc", "myfile.plain"),
-    );
-
-  console.log("text from decrypt", await blob.text());
+const rncryptor = await Rncryptor.initialize({
+  rncryptorWasmLocation,
 });
+const data = "Hello, world!";
+// const data = new Uint8Array([1, 2, 3, 4, 5]);
+rncryptor.api.FS.writeFile("/myfile.plain", data);
+rncryptor.api.encrypt("mypass", "/myfile.plain", "/myfile.enc");
+
+// delete the myfile.plain from the virtual filesystem
+rncryptor.api.FS.unlink("/myfile.plain");
+
+rncryptor.api.decrypt("mypass", "/myfile.enc", "myfile.plain");
+const blobParts = rncryptor.api.FS.readFile("/myfile.plain", {
+  encoding: "utf8",
+});
+const blob = new Blob([blobParts], {
+  type: "application/octet-stream",
+});
+console.log("text from decrypt", await blob.text());
+
+rncryptor.api.FS.unlink("/myfile.plain");
+rncryptor.api.FS.unlink("/myfile.enc");
 ```
 
 
