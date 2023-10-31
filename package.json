@@ -1,0 +1,11 @@
+{
+  "name": "rncryptor-c-wasm",
+  "version": "1.0.0",
+  "description": "wasm wrapper to RNCryptor-C",
+  "main": "dist/rncryptor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Tan",
+  "license": "MIT"
+}

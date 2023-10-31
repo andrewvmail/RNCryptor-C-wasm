@@ -33,4 +33,4 @@ cp libcrypto.a libssl.a $EMSCRIPTEN/system/lib
 
 COPY . /RNCryptor-C-wasm
 WORKDIR /RNCryptor-C-wasm
-RUN source /emsdk/emsdk_env.sh && EMCC_DEBUG=1 emcc /RNCryptor-C-wasm/src/rncryptor.c /RNCryptor-C-wasm/RNCryptor-C/rncryptor_c.c -I RNCryptor-C $EMSCRIPTEN/system/lib/libssl.a $EMSCRIPTEN/system/lib/libcrypto.a -I $EMSCRIPTEN/cache/sysroot/include -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s EXPORTED_RUNTIME_METHODS='["cwrap"]' -o rncryptor.out.js
+RUN source /emsdk/emsdk_env.sh && mkdir -p dist/ && EMCC_DEBUG=1 emcc /RNCryptor-C-wasm/src/rncryptor.c /RNCryptor-C-wasm/RNCryptor-C/rncryptor_c.c /RNCryptor-C-wasm/RNCryptor-C/mutils.c -I RNCryptor-C $EMSCRIPTEN/system/lib/libssl.a $EMSCRIPTEN/system/lib/libcrypto.a -I $EMSCRIPTEN/cache/sysroot/include -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s EXPORTED_RUNTIME_METHODS='["cwrap", "FS"]' -s ENVIRONMENT="web" -s ALLOW_MEMORY_GROWTH=1 -s EXPORT_ES6=1 -s MODULARIZE=1 -s WASM_ASYNC_COMPILATION=1 -o dist/rncryptor.js
