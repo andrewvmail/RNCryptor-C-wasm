@@ -1,12 +1,12 @@
 
 ### Installation
-```
+```bash
 npm install rncryptor-c-wasm 
 cp -r node_modules/rncryptor-c-wasm/dist/rncryptor.wasm public/
 ```
 
 ### Usage (vite)
-```
+```js
 import rncryptor from "rncryptor-c-wasm";
 import rncryptorWasm from "/rncryptor.wasm?url&file"; 
 
@@ -43,7 +43,7 @@ rncryptor({
 
 
 ### Building locally
-```
+```bash
 git clone https://github.com/andrewvmail/RNCryptor-C-wasm
 git submodule init
 git submodule update
